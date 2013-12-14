@@ -1,0 +1,137 @@
+//
+// Prefix header for all source files of the 'TaoBaoOpen' target in the 'TaoBaoOpen' project
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 5.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+#endif
+
+
+ 
+//#define DEBUG_MODE    //是否输出详细日志信息的开关，正式发布的时候要注释这句
+
+#ifdef DEBUG_MODE
+#define MyNSLog( s, ... ) \
+NSLog( @"<%p %@:(%d)> %@", self, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
+#else
+#define MyNSLog( s, ... )
+#endif
+
+#define flipType 0  //login界面和主界面动画切换 0-Slide 1-view flip  2-controller flip
+#define flipDuration 0.5//动画切换时间间隔
+
+#pragma mark - 所有预定义变量
+//自定义变量
+#define AppName         @"淘衣省钱宝"              //产品名称
+#define AppVersion      @"V1.0"                      //产品版本号
+#define AppImgFolder    @"TYSQB"                       //图片总目录名
+#define AppDBName       @"TYSQB_1_0.sqlite"   //数据库名称
+#define AppResourceFile @"TYSQB.bundle"        //程序打包资源文件
+
+#define ItemFields      @"num_iid,nick,title,price,item_location,seller_credit_score,click_url,pic_url,volume"     //下载item的fields
+#define PageSize        @"12"       //每页最多返回的条数
+#define SandBoxUrl      @"http://gw.api.tbsandbox.com/router/rest"                 //沙盒URL入口
+#define TaoBaoUrl       @"http://gw.api.taobao.com/router/rest"     //正式URL入口
+#define InitDB          NO                           //只有当需要测试数据时才为YES
+#define UseSandBoxUrl   NO                    //正式发布要关闭
+#define DownloadAppkey  @"http://www.tysqb.com/signkey.txt" //下载key的地址
+
+// UI Tag定义
+#define TagOfUIView 1
+#define TagOfUITableView 20
+#define TagOfUIPickerView 30
+#define TagOfUITextView 40
+#define TagOfUISegmentedControl 50
+#define TagOfYSCGridView 60
+#define TagOfUIProgressBar 70
+#define TagOfUIToolBar 80
+#define TagOfUISearchBar 90
+#define TagOfUIImageView 100
+#define TagOfUILabel 150
+#define TagOfUITextField 200
+#define TagOfUIButton 250
+#define TagOfUIBarButton 300
+#define TagOfUITableViewCell 350
+#define TagOfUITableViewSection 500
+#define TagOfUISwitch 550
+#define TagOfUIAlertView  1100
+
+#pragma mark - 所有常用宏函数
+//自定义方法的缩写调用
+#define AppSession [Singleton sharedSingleton]
+#define VoiceFile(x) [FileManager getVoiceFile:x]
+#define GetGeneralImg(x) [UIImage imageWithContentsOfFile:[FileManager getGeneralImagePath:x]]//显示图片通用方法
+
+#define JsonField(name) [Common jsonfield:name]
+#define LocalMenu [Common NSDateToNSString:[NSDate date] Format:@"yyyyMMddHHmmssSSS"]   //本地主单唯一编号
+#define CurrentTime [Common NSDateToNSString:[NSDate date] Format:@"yyyy-MM-dd HH:mm:ss"]   //当前时间
+#define FormatNilObject(x) [Common formatNilObject:x]
+
+//非自定义方法的缩写调用
+#define DocumentPath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]//沙盒资源目录
+#define BoundlePath [[NSBundle mainBundle] resourcePath]                                //程序根目录
+#define AppResourcePath [BoundlePath stringByAppendingPathComponent:AppResourceFile]    //程序打包资源目录
+
+#define DBRealPath [DocumentPath stringByAppendingPathComponent:AppDBName]              //正式使用时的数据库绝对路径
+#define DBDemoPath [BoundlePath stringByAppendingPathComponent:AppDBName]               //自带数据库绝对路径
+
+#define XRTranslateRealPath [DocumentPath stringByAppendingPathComponent:XRTranslate]   //正式使用时的翻译对照文件绝对路径
+#define XRTranslateDemoPath [AppResourcePath stringByAppendingPathComponent:XRTranslate]//自带翻译对照文件绝对路径
+
+#define VoiceFolder [AppImgFolder stringByAppendingPathComponent:@"Voice"]              //声音文件目录
+#define FolderOEMImg [AppImgFolder stringByAppendingPathComponent:@"OEM"]               //oem图片相对目录
+#define FolderUISkinImgs [AppResourcePath stringByAppendingFormat:@"/%@/%@", AppImgFolder,@"UISkinImgs"] //程序界面美化图片目录(作为备用地址)
+
+#define DeviceUdid [[[UIDevice currentDevice] uniqueIdentifier] lowercaseString]//udid
+#define MyDeviceUdid [[[UIDevice currentDevice] uniqueGlobalDeviceIdentifier] lowercaseString]           //自定义的udid
+#define MyDeviceUdid1 [[[UIDevice currentDevice] uniqueDeviceIdentifier] lowercaseString]                //自定义的udid
+
+#define DeviceSerialNumber [UIDevice currentDevice].serialNumber                        //序列号
+#define FileDefaultManager [NSFileManager defaultManager]                               //文件操作静态对象
+
+#define DictObject(dic,itemName) [Common DictObject:dic item:itemName]                  //[dic objectForKey:itemName]
+#define DictInt(dic,itemName) [[Common DictObject:dic item:itemName] intValue]
+#define DictFloat(dic,itemName) [[Common DictObject:dic item:itemName] floatValue]
+
+#define ArrInt(arr,index) [[arr objectAtIndex:index] intValue]
+#define ArrObject(arr,index) [arr objectAtIndex:index]
+//#define Trim(x) [x stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
+#define Trim(x) [Common StringTrim:x]
+
+#define Int2Number(i) [NSNumber numberWithInteger:i]
+#define TL_FLOATARG(x) ( (x) ? ((x) / (2 * (x))) : (((x) + 1) / 2) )
+#define NumObject(x) (TL_FLOATARG(x) ? [NSNumber numberWithDouble:(x)] : [NSNumber numberWithLong:(x)])
+#define RGBA(r,g,b,a) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:a/255.0f]
+
+//随机数 from ~ to 之间(包括边界)
+#define GetRandomNumber(from,to) ((int)(from + arc4random() % (to-from+1)))
+
+#pragma mark - Notification
+#define addNObserver(_selector,_name) ([[NSNotificationCenter defaultCenter] addObserver:self selector:_selector name:_name object:nil])
+#define removeNObserver(_name) ([[NSNotificationCenter defaultCenter] removeObserver:self name:_name object:nil])
+#define postN(_name) ([[NSNotificationCenter defaultCenter] postNotificationName:_name object:nil userInfo:nil])
+#define postNWithObj(_name,_obj) ([[NSNotificationCenter defaultCenter] postNotificationName:_name object:_obj userInfo:nil])
+#define postNWithInfos(_name,_obj,_infos) ([[NSNotificationCenter defaultCenter] postNotificationName:_name object:_obj userInfo:_infos])
+
+
+#define CC_DEGREES_TO_RADIANS(x) ((x) * 0.01745329252f) // PI / 180
+#define CC_RADIANS_TO_DEGREES(x) ((x) * 57.29577951f)   // 180 / PI
+
+///---------------------------------------------------------------------------
+/// @name navigationController
+///---------------------------------------------------------------------------
+#define PUSHNEXTVIEWCONTROLLER(_viewControllerName) \
+([self.navigationController pushViewController:[[[NSClassFromString(_viewControllerName) alloc] initWithNibName:_viewControllerName bundle:nil] autorelease] animated:YES])
+
+
+#define ShareList [ShareSDK getShareListWithType:ShareTypeSinaWeibo, ShareTypeTencentWeibo, ShareTypeMail, \
+                    ShareTypeWeixiSession, ShareTypeWeixiTimeline, ShareTypeQQSpace, ShareTypeQQ, nil]
+                    //ShareTypeRenren,ShareTypePengyou,ShareTypeDouBan,ShareType163Weibo,ShareTypeKaixin,
+
